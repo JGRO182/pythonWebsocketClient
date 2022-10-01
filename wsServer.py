@@ -3,14 +3,25 @@ import asyncio
 
 PORT = 7890
 
+connected = set()
+
 async def echo(websocket, path):
     print("A Client just connected")
-
-    async for message in websocket:
-
-        print("Recieved a message from a Client: "+message)
-
-        await websocket.send(message)
+    connected.add(websocket)
+    try:
+        async for message in websocket:
+            print("Recieved a message from a Client: "+message)
+            #await websocket.send(message)
+            for ws in connected:
+                if ws != websocket:
+                    await ws.send(message)
+            
+    except websockets.exceptions.ConnectionClosed:
+        print("A Client just disconnected")
+    except:
+        print("Something went wrong")
+    finally:
+        connected.remove(websocket)
             
 
 

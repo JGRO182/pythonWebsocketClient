@@ -66,13 +66,14 @@ def drawRect(width, height, borderwidth, relativPosition):
 
 
 async def listen():
-    url = "ws://websocket-server-canvas.glitch.me/"
+    #url = "ws://websocket-server-canvas.glitch.me/"
     #url = "ws://simple-websocket-server-echo.glitch.me/"
-    #url = "ws://localhost:7890"
+    url = "ws://localhost:7890"
 
     async with websockets.connect(url) as ws:
             await ws.send("Hello Server")
             while True:
+                
                 msg = await ws.recv()
                 msgRecieved(msg)
                     
